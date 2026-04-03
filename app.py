@@ -5,7 +5,7 @@ import os
 import threading
 
 # --- Configuration ---
-MODEL_PATH = "model/Epic/sanskrit-gpt-epic-hyper" # Path to the dropped folder
+MODEL_PATH = "model/Epic/sanskrit-gpt-epic-hyper"
 DEFAULT_MAX_LENGTH = 512
 
 # Global model state for lazy loading
@@ -77,7 +77,7 @@ def generate_verse(prompt, style, temperature, top_p, max_length):
                 top_p=top_p,
                 repetition_penalty=1.1,
                 eos_token_id=tokenizer.eos_token_id,
-                pad_token_id=tokenizer.pad_token_id
+                pad_token_id=tokenizer.pad_token_id if tokenizer.pad_token_id is not None else tokenizer.eos_token_id
             )
         
         raw_text = tokenizer.decode(output_ids[0], skip_special_tokens=False)
