@@ -4,7 +4,7 @@ emoji: 🕉
 colorFrom: yellow
 colorTo: red
 sdk: gradio
-sdk_version: 4.41.0
+sdk_version: 4.44.1
 app_file: app.py
 python_version: 3.11
 pinned: false
