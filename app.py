@@ -33,16 +33,6 @@ def clean_output(text):
     """
     Strips residual BPE/Metaspace artifacts for clean Devanagari output.
     """
-    # Remove any leftover special tags (fallback in case skip_special_tokens misses any)
-    for tag in ["<MBH>", "<RAM>", "<eos>", "<pad>", "<bos>", "<unk>", "<s>", "</s>"]:
-        text = text.replace(tag, "")
-
-    # Replace Metaspace word-boundary marker (▁, U+2581) with a space
-    text = text.replace("\u2581", " ")
-
-    # Replace GPT-2 style space marker as fallback
-    text = text.replace("\u0120", " ")
-
     # Collapse multiple spaces and strip
     text = " ".join(text.split())
 
