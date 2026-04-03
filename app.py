@@ -31,11 +31,22 @@ def load_model():
 
 def clean_output(text):
     """
-    Strips residual BPE/Metaspace artifacts for clean Devanagari output.
+    Cleans BPE/Metaspace artifacts and joins Sanskrit suffixes to their base words.
     """
-    # Collapse multiple spaces and strip
-    text = " ".join(text.split())
+    # Restore Metaspace (▁) to standard space conversion
+    text = text.replace("\u2581", " ")
+    
+    # Sanskrit Suffix Joining: Remove spaces before combining marks and case endings
+    # This turns "देवी ं" into "देवीं" and "आश्रम ेषु" into "आश्रमेषु"
+    suffixes = [
+        " ं", " ः", " ा", " ि", " ी", " ु", " ू", " े", " ै", " ो", " ौ", " ्", 
+        " ेषु", " ाः", " ान", " स्य", " स्तु", " न्"
+    ]
+    for s in suffixes:
+        text = text.replace(s, s.strip())
 
+    # Final cleanup of multiple spaces
+    text = " ".join(text.split())
     return text.strip()
 
 def generate_verse(prompt, style, temperature, top_p, max_length):
