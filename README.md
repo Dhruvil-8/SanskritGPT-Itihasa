@@ -93,6 +93,5 @@ Epic/
 
 ## Data Source
 
-The primary data for this project is sourced from:
-Muneo Tokunaga's Digital Sanskrit Texts — https://bombay.indology.info/
+The primary data for this project is sourced from: https://bombay.indology.info/
 Electronic texts of the Mahabharata and Ramayana.
