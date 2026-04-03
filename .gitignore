@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environments
+.venv/
+venv/
+ENV/
+env/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+notebooks/temp_corpus*.txt
+
+# Do not upload — archive notebooks
+notebooks/archive/
+
+# Do not upload — documentation drafts
+docs/
+
+# Do not upload — model zip archives and intermediate checkpoints
+model/*.zip
+model/**/model_output/
+model/Epic/model_output/
+
+# Do not upload — evaluation report (generated artifact)
+evaluation_report.md
+
+# Do not upload — temp workspace
+tmp/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
