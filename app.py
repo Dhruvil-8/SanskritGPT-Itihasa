@@ -31,23 +31,21 @@ def load_model():
 
 def clean_output(text):
     """
-    Strips metadata tags and normalizes spaces for a professional-grade output.
+    Strips residual BPE/Metaspace artifacts for clean Devanagari output.
     """
-    # Remove metadata tags and common BPE artifacts
-    tags = ["<MBH>", "<RAM>", "<eos>", "<pad>", "<bos>"]
-    for tag in tags:
+    # Remove any leftover special tags (fallback in case skip_special_tokens misses any)
+    for tag in ["<MBH>", "<RAM>", "<eos>", "<pad>", "<bos>", "<unk>", "<s>", "</s>"]:
         text = text.replace(tag, "")
-    
-    # Normalize space markers used by GPT-2/BPE decoders
-    # The '_' and 'Ġ' are common space-byte representations
-    text = text.replace("Ġ", " ").replace("_", " ")
-    
-    # Clean up double spaces or leading/trailing whitespace
+
+    # Replace Metaspace word-boundary marker (▁, U+2581) with a space
+    text = text.replace("\u2581", " ")
+
+    # Replace GPT-2 style space marker as fallback
+    text = text.replace("\u0120", " ")
+
+    # Collapse multiple spaces and strip
     text = " ".join(text.split())
-    
-    # Remove any stray colons or punctuation that might have bled through
-    text = text.replace(" : ", " ").replace(" :", " ")
-    
+
     return text.strip()
 
 def generate_verse(prompt, style, temperature, top_p, max_length):
@@ -80,7 +78,9 @@ def generate_verse(prompt, style, temperature, top_p, max_length):
                 pad_token_id=tokenizer.pad_token_id if tokenizer.pad_token_id is not None else tokenizer.eos_token_id
             )
         
-        raw_text = tokenizer.decode(output_ids[0], skip_special_tokens=False)
+        # Use skip_special_tokens=True so the tokenizer natively handles
+        # <MBH>, <RAM>, <eos> etc. removal before our cleanup pass
+        raw_text = tokenizer.decode(output_ids[0], skip_special_tokens=True)
         return clean_output(raw_text)
     
     except Exception as e:
